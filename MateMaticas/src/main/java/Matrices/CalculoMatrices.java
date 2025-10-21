@@ -310,4 +310,5 @@ public class CalculoMatrices {
             solucionLista.set(incognitas.get(i) - 1 , soluciones.get(i) );
         }
     }
+
 }

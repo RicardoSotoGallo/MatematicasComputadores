@@ -1,10 +1,10 @@
 package org.example;
 
-import Matrices.CalculoMatrices;
-import Matrices.SolucionArbol;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import Matrices.CalculoMatrices;
+import Matrices.SolucionArbol;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -12,6 +12,7 @@ public class Main {
     public static void main(String[] args) {
         //Poner la matriz sin cambiar signo en maximizacion
         List<String> ls = new ArrayList<>();
+        
         ls.add(0f+   ","+ 4f+ ","+-3f+    ","+ 0f+   ","+ 0f);
         ls.add(7f+   ","+ 5f+ ","+-2f+    ","+ 1f+   ","+ 0f);
         ls.add(5f+   ","+ 0f+ ","+ 1f+    ","+ 0f+   ","+ 1f);
@@ -22,7 +23,9 @@ public class Main {
         CalculoMatrices matriz = new CalculoMatrices(ls);
         matriz.ensenarMatriz();
         //matriz.simplexDualMaximizacion();
-        SolucionArbol sol = new SolucionArbol(matriz , 2);
+        SolucionArbol sol = new SolucionArbol(matriz , 2 , "Cabeza");
+        System.out.println("========================================");
+        sol.ensenarArbol();
 
         //System.out.println("Ultimo eseñar ============");
         //sol.mostrarMatriz();
