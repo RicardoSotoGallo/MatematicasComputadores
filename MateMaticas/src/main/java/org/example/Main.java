@@ -1,6 +1,7 @@
 package org.example;
 
 import Matrices.CalculoMatrices;
+import Matrices.SolucionArbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,12 @@ public class Main {
         ls.add(5f+   ","+0f+ ","+1f+    ","+0f+   ","+1f+ ","+0f+ ",");
         ls.add(-2/5f+","+0f+ ","+2/5f+  ","+-1/5f+","+0+  ","+1f+ ",");*/
         CalculoMatrices matriz = new CalculoMatrices(ls);
+        matriz.ensenarMatriz();
         //matriz.simplexDualMaximizacion();
-        matriz.simplexMaximizacion();
+        SolucionArbol sol = new SolucionArbol(matriz , 2);
+
+        //System.out.println("Ultimo eseñar ============");
+        //sol.mostrarMatriz();
+
     }
 }

@@ -1,11 +1,29 @@
 package Matrices;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CalculoMatrices {
-    List<List<Float>> matrizNumero;
-    List<Float> funcionObjetivo;
+    private List<List<Float>> matrizNumero;
+    private List<Float> funcionObjetivo;
+    private HashMap<Integer,Integer> incognitas;
+    private HashMap<Integer,Float> soluciones;
+    private List<Float> solucionLista;
+    public Integer numeroIncgnita;
+    public Integer numeroEcuaciones;
+
+    public HashMap<Integer, Float> getSoluciones() {
+        return soluciones;
+    }
+
+    public HashMap<Integer, Integer> getIncognitas() {
+        return incognitas;
+    }
+
+    public List<Float> getSolucionLista() {
+        return solucionLista;
+    }
 
     public List<List<Float>> getMatrizNumero() {
         return matrizNumero;
@@ -31,8 +49,19 @@ public class CalculoMatrices {
         }
         funcionObjetivo = matrizNumero.getFirst();
 
-        ensenarMatriz();
+        //ensenarMatriz();
 
+    }
+
+    public CalculoMatrices copiarClase(){
+        List<String> lsTexto = new ArrayList<>();
+        numeroEcuaciones = matrizNumero.size();
+        for(int i = 0; i < numeroEcuaciones;i++){
+            lsTexto.add(
+                    matrizNumero.get(i).toString().replace("[","").replace("]","")
+            );
+        }
+        return new CalculoMatrices(lsTexto);
     }
 
     public void ensenarMatriz(){
@@ -73,12 +102,13 @@ public class CalculoMatrices {
         }
     }
 
-    public void simplexMaximizacion(){
+    public String simplexMaximizacion(){
         String mensajeFinal = "";
-        int tam = funcionObjetivo.size();
-        int numeroEcuaciones = matrizNumero.size();
+        String res = "";
+        numeroIncgnita = funcionObjetivo.size();
+        numeroEcuaciones = matrizNumero.size();
         boolean terminado = true;
-        for (int i = 0; i < tam; i++) {
+        for (int i = 0; i < numeroIncgnita; i++) {
             float num = funcionObjetivo.get(i);
             if (num != 0) {
                 funcionObjetivo.set(i, -num);
@@ -97,7 +127,7 @@ public class CalculoMatrices {
 
 
 
-            for (int i = 1; i < tam; i++) {
+            for (int i = 1; i < numeroIncgnita; i++) {
                 if (funcionObjetivo.get(i) < minimo && funcionObjetivo.get(i) < 0) {
                     minimo = funcionObjetivo.get(i);
                     posMin = i;
@@ -106,6 +136,7 @@ public class CalculoMatrices {
             if (posMin == 0) {
                 terminado = false;
                 mensajeFinal = "Simplex terminado";
+                res = "T";
                 break;
             } else {
                 System.out.println("\nAhora de la funcion objetivo buscamos el mas negativo");
@@ -132,6 +163,7 @@ public class CalculoMatrices {
             if (posMin == 0) {
                 terminado = false;
                 mensajeFinal = "Es infactible";
+                res = "I";
                 break;
             } else {
                 ensenarMatriz(columna, posMin);
@@ -148,13 +180,14 @@ public class CalculoMatrices {
 
 
 
-
+        return res;
     }
 
-    public void simplexDualMaximizacion() {
+    public String simplexDualMaximizacion() {
         String mensajeFinal = "";
-        int tam = funcionObjetivo.size();
-        int numeroEcuaciones = matrizNumero.size();
+        String res = "";
+        numeroIncgnita = funcionObjetivo.size();
+        numeroEcuaciones = matrizNumero.size();
         boolean terminado = true;
         float auxFloat;
         while (terminado){
@@ -173,6 +206,7 @@ public class CalculoMatrices {
             if (posMin == 0) {
                 mensajeFinal = "Terminado";
                 terminado = false;
+                res = "T";
                 break;
             } else {
                 System.out.println("\nPrimero buscamos la ecuacion con el valor mas negativo");
@@ -183,7 +217,7 @@ public class CalculoMatrices {
             minimo = Float.MAX_VALUE;
             posMin = 0;
 
-            for (int inc = 1; inc < tam; inc++) {
+            for (int inc = 1; inc < numeroIncgnita; inc++) {
                 if (matrizNumero.get(fila).get(inc) < 0) {
                     auxFloat = -matrizNumero.get(0).get(inc) / matrizNumero.get(fila).get(inc);
                     if (auxFloat > 0 && auxFloat < minimo) {
@@ -195,6 +229,7 @@ public class CalculoMatrices {
 
             if (posMin == 0) {
                 mensajeFinal = "Es infactible";
+                res = "I";
                 terminado = false;
                 break;
             } else {
@@ -209,15 +244,16 @@ public class CalculoMatrices {
         }
 
         System.out.println("\nmensaje final -> "+mensajeFinal);
+        return res;
 
     }
 
     public void pibotaje(Integer fila, Integer columna){
         float numeroQueMultiplica = 1 / matrizNumero.get(fila).get(columna);
-        int tam = funcionObjetivo.size();
-        int numeroEcuaciones = matrizNumero.size();
+        numeroIncgnita = funcionObjetivo.size();
+        numeroEcuaciones = matrizNumero.size();
         float auxF1,auxF2;
-        for(int i = 0 ; i < tam ; i++){
+        for(int i = 0 ; i < numeroIncgnita ; i++){
             matrizNumero.get(fila).set( i ,
                     matrizNumero.get(fila).get(i) * numeroQueMultiplica
                     );
@@ -229,7 +265,7 @@ public class CalculoMatrices {
                 //auxF2 = matrizNumero.get(fila).get(columna);
                 numeroQueMultiplica = -matrizNumero.get(ec).get(columna) / matrizNumero.get(fila).get(columna);
 
-                for(int inc = 0; inc < tam ; inc++){
+                for(int inc = 0; inc < numeroIncgnita ; inc++){
 
                     matrizNumero.get(ec).set( inc ,
                             matrizNumero.get(fila).get(inc) * numeroQueMultiplica + matrizNumero.get(ec).get(inc)
@@ -243,5 +279,35 @@ public class CalculoMatrices {
         }
 
 
+    }
+
+    public void sacarIncognitas(){
+        incognitas = new HashMap<>();
+        soluciones = new HashMap<>();
+        solucionLista = new ArrayList<>();
+        numeroIncgnita = funcionObjetivo.size();
+        numeroEcuaciones = matrizNumero.size();
+        int ecuacionEscogida = 0, sumaEc = 0;
+        for( int inc = 1 ;  inc < numeroIncgnita ; inc++){
+            if(matrizNumero.get(0).get(inc) == 0){
+                ecuacionEscogida = 0;
+                sumaEc = 0;
+                for(int ec = 1 ; ec < numeroEcuaciones ; ec ++){
+                    sumaEc += matrizNumero.get(ec).get(inc);
+                    if(matrizNumero.get(ec).get(inc) == 1) ecuacionEscogida = ec;
+                }
+                if(sumaEc == 1 && ecuacionEscogida != 0) {
+                    incognitas.put(ecuacionEscogida, inc);
+                    soluciones.put( ecuacionEscogida , matrizNumero.get(ecuacionEscogida).getFirst() );
+                    //solucionLista.add(matrizNumero.get(ecuacionEscogida).getFirst());
+                }
+            }
+
+
+        }
+        for(int i = 1 ; i < numeroIncgnita ; i++) solucionLista.add(0f);
+        for(int i = 1 ; i < numeroEcuaciones ; i++){
+            solucionLista.set(incognitas.get(i) - 1 , soluciones.get(i) );
+        }
     }
 }
