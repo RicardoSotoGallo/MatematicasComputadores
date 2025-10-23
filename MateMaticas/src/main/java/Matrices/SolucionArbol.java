@@ -51,7 +51,7 @@ public class SolucionArbol {
     private void primerPaso(){
         System.out.println("===============- empezamos con la matriz "+id+" -==================");
         matriz.simplexMaximizacion();
-        matriz.sacarIncognitas();
+        //matriz.sacarIncognitas();
         z = matriz.getMatrizNumero().get(0).get(0);
         lsSoluciones = matriz.getSolucionLista();
         crearHijos();
@@ -67,7 +67,7 @@ public class SolucionArbol {
 
         System.out.println("===============- empezamos con la matriz "+id+" -==================");
         String resultado = matriz.simplexDualMaximizacion();
-        matriz.sacarIncognitas();
+        //matriz.sacarIncognitas();
         if(resultado == "T"){
             z = matriz.getMatrizNumero().get(0).get(0);
             if(z > maximo){
@@ -110,11 +110,11 @@ public class SolucionArbol {
         CalculoMatrices matrizAux;
 
         //Aqui calculamos cuales son las soluciones mas cercanas a 1/2
-        for(int i = 1 ; i < matriz.numeroEcuaciones ; i ++){
+        for (int i = 1; i < matriz.getNumeroEcuaciones(); i++) {
             auxFloat = matriz.getMatrizNumero().get(i).getFirst();
-            ls.add( Math.abs(auxFloat - (int)auxFloat - 0.5f) );
+            ls.add(Math.abs(auxFloat - (int) auxFloat - 0.5f));
         }
-        System.out.println("ls -> "+ls);
+        System.out.println("ls -> " + ls);
 
         //Obtenemos la posicion del mejor valor
         posicionChico = ls.indexOf( ls.stream().min(Float::compare).get() ) + 1;
@@ -122,18 +122,20 @@ public class SolucionArbol {
         //===- Ahora creamos el hijo menor
         matrizAux = matriz.copiarClase();
         //Aumentamos los ceros
-        for(int i = 0; i < matriz.numeroEcuaciones ; i++){
+
+
+        /*for(int i = 0; i < matriz.getNumeroEcuaciones() ; i++){
             matrizAux.getMatrizNumero().get(i).add(0f);
-        }
+        }*/
 
         //Creamos la ecuacion que vamos a añadir
-        lsAux = new ArrayList<>(Collections.nCopies(matriz.numeroIncgnita, 0f));
+        lsAux = new ArrayList<>(Collections.nCopies(matriz.getNumeroIncgnita(), 0f));
         float numero = matriz.getMatrizNumero().get(posicionChico).getFirst();
         lsAux.set(0 , (float)((int)numero));
         lsAux.set(matriz.getIncognitas().get(posicionChico), 1.0f );
         lsAux.add(1f);
-        matrizAux.getMatrizNumero().add(lsAux); //añadimos la ecuacion extra
-        
+        //matrizAux.getMatrizNumero().add(lsAux); //añadimos la ecuacion extra
+        matrizAux.añadirEcuacion(lsAux);
         //Ahora resolvemos el pibotaje para que la ecuacion sea correcta
         matrizAux.pibotaje( posicionChico ,  matriz.getIncognitas().get(posicionChico));
         menorQue = new SolucionArbol(matrizAux,"hijo",maximo , numeroDeSolucionesImportantes , id +"-menor");
@@ -141,17 +143,18 @@ public class SolucionArbol {
         matrizAux = matriz.copiarClase();
 
         //Aumentamos los ceros
-        for(int i = 0; i < matriz.numeroEcuaciones ; i++){
+        /*for(int i = 0; i < matriz.getNumeroEcuaciones() ; i++){
             matrizAux.getMatrizNumero().get(i).add(0f);
-        }
+        }*/
 
         //Creamos la ecuacion que vamos a añadir
-        lsAux = new ArrayList<>(Collections.nCopies(matriz.numeroIncgnita, 0f));
+        lsAux = new ArrayList<>(Collections.nCopies(matriz.getNumeroIncgnita(), 0f));
         numero =matriz.getMatrizNumero().get(posicionChico).getFirst();
         lsAux.set(0 , -((float)((int)numero)+1));
         lsAux.set(matriz.getIncognitas().get(posicionChico), -1.0f );
         lsAux.add(1f);
-        matrizAux.getMatrizNumero().add(lsAux); //añadimos la ecuacion extra
+        matrizAux.añadirEcuacion(lsAux);
+        //matrizAux.getMatrizNumero().add(lsAux); //añadimos la ecuacion extra
 
         //Ahora resolvemos el pibotaje para que la ecuacion sea correcta
         matrizAux.pibotaje( posicionChico ,  matriz.getIncognitas().get(posicionChico));
@@ -167,7 +170,7 @@ public class SolucionArbol {
     public void ensenarArbol(){
         System.out.println("Matriz con id -> "+id);
         System.out.println("tipos -> "+tipo);
-        matriz.sacarIncognitas();
+        //matriz.sacarIncognitas();
         System.out.println("Soluciones -> "+matriz.getSolucionLista());
         System.out.println("Z -> "+z);
         System.out.println("========================================");

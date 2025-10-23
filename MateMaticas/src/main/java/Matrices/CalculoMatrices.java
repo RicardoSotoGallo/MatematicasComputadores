@@ -10,8 +10,16 @@ public class CalculoMatrices {
     private HashMap<Integer,Integer> incognitas;
     private HashMap<Integer,Float> soluciones;
     private List<Float> solucionLista;
-    public Integer numeroIncgnita;
-    public Integer numeroEcuaciones;
+    private Integer numeroIncgnita;
+    private Integer numeroEcuaciones;
+
+    public Integer getNumeroIncgnita() {
+        return numeroIncgnita;
+    }
+
+    public Integer getNumeroEcuaciones() {
+        return numeroEcuaciones;
+    }
 
     public HashMap<Integer, Float> getSoluciones() {
         return soluciones;
@@ -48,6 +56,7 @@ public class CalculoMatrices {
             matrizNumero.add(unaEcuacion);
         }
         funcionObjetivo = matrizNumero.getFirst();
+        sacarIncognitas();
 
         //ensenarMatriz();
 
@@ -61,6 +70,7 @@ public class CalculoMatrices {
                     matrizNumero.get(i).toString().replace("[","").replace("]","")
             );
         }
+        //sacarIncognitas();
         return new CalculoMatrices(lsTexto);
     }
 
@@ -77,6 +87,9 @@ public class CalculoMatrices {
             }
             System.out.println();
         }
+        System.out.println("Solucion lista -> "+ solucionLista);
+        System.out.println("incognitas -> "+incognitas);
+        System.out.println("Soluciones -> "+soluciones);
     }
     //esto es lo mismo pero ahora marca
     public void ensenarMatriz(Integer x , Integer y){
@@ -254,8 +267,9 @@ public class CalculoMatrices {
         numeroEcuaciones = matrizNumero.size();
         float auxF1,auxF2;
         for(int i = 0 ; i < numeroIncgnita ; i++){
+            auxF1 =  matrizNumero.get(fila).get(i) * numeroQueMultiplica;
             matrizNumero.get(fila).set( i ,
-                    matrizNumero.get(fila).get(i) * numeroQueMultiplica
+                    Math.round(auxF1 * 100000f) / 100000f
                     );
         }
         //System.out.println("=======");ensenarMatriz();
@@ -266,9 +280,9 @@ public class CalculoMatrices {
                 numeroQueMultiplica = -matrizNumero.get(ec).get(columna) / matrizNumero.get(fila).get(columna);
 
                 for(int inc = 0; inc < numeroIncgnita ; inc++){
-
+                    auxF1 =  matrizNumero.get(fila).get(inc) * numeroQueMultiplica + matrizNumero.get(ec).get(inc);
                     matrizNumero.get(ec).set( inc ,
-                            matrizNumero.get(fila).get(inc) * numeroQueMultiplica + matrizNumero.get(ec).get(inc)
+                            Math.round(auxF1 * 100000f) / 100000f
                     );
 
                 }
@@ -277,11 +291,28 @@ public class CalculoMatrices {
             }
             //System.out.println("=======");
         }
-
+        //=======================================
+        //toca cambiar los datos de la matriz
+        int ecuacionEscogida = fila, incognitaQueSale = incognitas.get(ecuacionEscogida),
+        incognitaQueEntra = columna;
+        System.out.println("ecuacion escogida -> "+ecuacionEscogida +" incognita que sale -> "+incognitaQueSale +"\n"
+        +"incognita que entra -> "+incognitaQueEntra);
+        //Primer cambio cuales son las incognitas
+        incognitas.put(ecuacionEscogida,incognitaQueEntra);
+        //cambiamos las soluciones
+        for(int i = 1 ; i < numeroEcuaciones;i++){
+            soluciones.put(i , matrizNumero.get(i).getFirst());
+        }
+        //Quitamos la solucion de la incognita que sale
+        solucionLista.set(incognitaQueSale -1 , 0f);
+        //actualizamos las incognitas
+        for(int i : incognitas.keySet()){
+            solucionLista.set( incognitas.get(i)-1 , soluciones.get(i) );
+        }
 
     }
 
-    public void sacarIncognitas(){
+    private void sacarIncognitas(){
         incognitas = new HashMap<>();
         soluciones = new HashMap<>();
         solucionLista = new ArrayList<>();
@@ -309,6 +340,21 @@ public class CalculoMatrices {
         for(int i = 1 ; i < numeroEcuaciones ; i++){
             solucionLista.set(incognitas.get(i) - 1 , soluciones.get(i) );
         }
+    }
+
+    public void añadirEcuacion(List<Float> ecuacionNueva){
+
+        //primero añadimos los 0
+        for(int i = 0; i < getNumeroEcuaciones() ; i++){
+            matrizNumero.get(i).add(0f);
+        }
+        matrizNumero.add(ecuacionNueva); //añadimos la ecuacion extra
+        numeroIncgnita += 1;
+        numeroEcuaciones += 1;
+        Float nuevaSolucion = matrizNumero.get(numeroEcuaciones-1).getFirst();
+        incognitas.put( numeroEcuaciones-1, numeroIncgnita -1);
+        soluciones.put( numeroEcuaciones-1 , nuevaSolucion);
+        solucionLista.add(nuevaSolucion);
     }
 
 }
