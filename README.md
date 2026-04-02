@@ -41,3 +41,9 @@ Este es el enunciado que esta por defecto en la caparpeta ecuacion. Se puede cam
 
 <img width="480" height="239" alt="ecuacionEjemplo" src="https://github.com/user-attachments/assets/42080781-0513-4efc-bc57-54f7ac2779e8" />
 
+## Video enseñando el funcionamiento
+
+
+https://github.com/user-attachments/assets/8d00e655-3f03-48d2-a213-03d0fe430ed0
+
+
