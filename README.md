@@ -35,3 +35,8 @@ git clone https://github.com/RicardoSotoGallo/MatematicasComputadores.git
 3. Inserte el ejercicio en el fichero : MateMaticas/Ficheros/ecuacion.txt
 4. Ejuecute el fichero main en: MateMaticas/out/production/MateMaticas/org/example/Main.class
 5. Bebe agua
+
+## Ejemplo de como añadir un enunciado
+Este es el enunciado que esta por defecto en la caparpeta ecuacion. Se puede cambiar para poner otro ejercicio. Por ejemplo la ecuacion actual es:
+<img width="480" height="239" alt="ecuacionEjemplo" src="https://github.com/user-attachments/assets/42080781-0513-4efc-bc57-54f7ac2779e8" />
+
