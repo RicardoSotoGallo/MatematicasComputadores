@@ -15,7 +15,7 @@ import Matrices.CorteHiperPlano;
 public class Main {
     public static void main(String[] args) {
         List<String> ls = new ArrayList<>();
-        ls = leerFichero("MateMaticas/Fichero/ecuacion.txt");
+        ls = leerFichero("Fichero/ecuacion.txt");
         //System.out.println(ls);
 
         //Poner la matriz sin cambiar signo en maximizacion
