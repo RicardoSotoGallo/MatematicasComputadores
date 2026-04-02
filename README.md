@@ -30,6 +30,7 @@ Entre los contenidos que se pueden encontrar en este repositorio destacan:
 1. Clonar el repositorio:
 ```bash
 git clone https://github.com/RicardoSotoGallo/MatematicasComputadores.git
+```bash
 2. Inicie el proyecto desde la carpeta MateMaticas
 3. Inserte el ejercicio en el fichero : MateMaticas/Ficheros/ecuacion.txt
 4. Ejuecute el fichero main en: MateMaticas/out/production/MateMaticas/org/example/Main.class
