@@ -38,5 +38,6 @@ git clone https://github.com/RicardoSotoGallo/MatematicasComputadores.git
 
 ## Ejemplo de como añadir un enunciado
 Este es el enunciado que esta por defecto en la caparpeta ecuacion. Se puede cambiar para poner otro ejercicio. Por ejemplo la ecuacion actual es:
+
 <img width="480" height="239" alt="ecuacionEjemplo" src="https://github.com/user-attachments/assets/42080781-0513-4efc-bc57-54f7ac2779e8" />
 
